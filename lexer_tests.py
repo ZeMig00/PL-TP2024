@@ -66,5 +66,54 @@ class Test_Lexer(unittest.TestCase):
         r = list(self.lexer)
         self.verify_tokens(r, ['CHAR', 'NAME', 'PONTO', 'CHAR', 'MOD', 'DUP', 'PONTO', 'EMIT', 'CHAR', 'NAME', 'DUP', 'PONTO', 'NUMBER', 'SOMAR', 'EMIT'])
 
+    def test_11(self):
+        program = '''
+            : SPROUTS ." Miniature vegetables." ;
+            : MENU
+            CR TOFU CR SPROUTS CR
+            ;
+            MENU
+        '''
+        lex_input(self.lexer, program)
+        r = list(self.lexer)
+        self.verify_tokens(r, ["DP", "NAME", "PONTO", "STRING", "PV", "DP", "NAME", "CR",
+                               "NAME", "CR", "NAME", "CR", "PV", "NAME"])
+        
+    def test_12(self):
+        program = '''
+            : TESTKEY ( -- )
+            ." Hit a key: " KEY CR
+            ." That = " . CR
+            ;
+            TESTKEY
+        '''
+        lex_input(self.lexer, program)
+        r = list(self.lexer)
+        self.verify_tokens(r, ["DP", "NAME", "COMENTARIO",
+                               "PONTO", "STRING", "KEY", "CR",
+                               "PONTO", "STRING", "PONTO", "CR",
+                               "PV", "NAME"])
+        
+    def test_13(self):
+        program = '''
+        ( May the Forth be with you)
+        : STAR 42 EMIT ;
+        : STARS 0 DO STAR LOOP ;
+        : MARGIN CR 30 SPACES ;
+        : BLIP MARGIN STAR ;
+        : IOI MARGIN STAR 3 SPACES STAR ;
+        : IIO MARGIN STAR STAR 3 SPACES ;
+        : OIO MARGIN 2 SPACES STAR 2 SPACES ;
+        : BAR MARGIN 5 STARS ;
+        : F BAR BLIP BAR BLIP BLIP CR ;
+        : O BAR IOI IOI IOI BAR CR ;
+        : R BAR IOI BAR IIO IOI CR ;
+        : T BAR OIO OIO OIO OIO CR ;
+        : H IOI IOI BAR IOI IOI CR ;
+        '''
+        lex_input(self.lexer, program)
+        r = list(self.lexer)
+        self.assertEqual(len(r), 100)
+        
 if __name__ == "__main__":
     unittest.main()
