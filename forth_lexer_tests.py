@@ -1,5 +1,5 @@
 import unittest
-from lexer import *
+from forth_lexer import *
 
 class Test_Lexer(unittest.TestCase):
 
