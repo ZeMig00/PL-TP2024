@@ -1,4 +1,4 @@
-import sys
+import sys, re
 import ply.lex as lex
 
 
@@ -7,6 +7,7 @@ tokens = (
     "DP",           #:
     "PV",           #;
     "STRING",       #"
+    "PARAM",        #(vars--vars)
     "COMENTARIO",   #(...)
     "MAIOR",        #>
     "MENOR",        #<
@@ -74,8 +75,18 @@ def Lexer():
         '2dup':     '2DUP'
     }
 
+    def t_PARAM(t):
+        r'\(.*--.*\)'
+        l = Lexer()
+        text = str(t.value)
+        m = re.findall(r"\((.*)--(.*)\)", text)
+        entradas =re.findall("[a-z][a-z0-9.]*", m[0][0])
+        saidas = re.findall("[a-z][a-z0-9.]*", m[0][1])
+        t.value = [entradas , saidas]
+        return t
+
     def t_NAME(t):
-        r'[a-z]([a-z]|[0-9]|\.)*'
+        r'[a-z][a-z0-9.]*'
         if t.value in reserved:
             t.type = reserved.get(t.value)
         return t

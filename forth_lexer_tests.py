@@ -59,7 +59,8 @@ class Test_Lexer(unittest.TestCase):
     def test_9(self):
         lex_input(self.lexer, ': AVERAGE ( a b -- avg ) + 2/ ;')
         r = list(self.lexer)
-        self.verify_tokens(r, ['DP', 'NAME', 'COMENTARIO', 'SOMAR', 'NUMBER', 'DIVIDIR', 'PV'])
+        self.verify_tokens(r, ['DP', 'NAME', 'PARAM', 'SOMAR', 'NUMBER', 'DIVIDIR', 'PV'])
+        self.assertEqual(r[2].value, [['a','b'],['avg']])
 
     def test_10(self):
         lex_input(self.lexer, 'CHAR W . CHAR % DUP . EMIT CHAR A DUP . 32 + EMIT')
@@ -89,10 +90,11 @@ class Test_Lexer(unittest.TestCase):
         '''
         lex_input(self.lexer, program)
         r = list(self.lexer)
-        self.verify_tokens(r, ["DP", "NAME", "COMENTARIO",
+        self.verify_tokens(r, ["DP", "NAME", "PARAM",
                                "PONTO", "STRING", "KEY", "CR",
                                "PONTO", "STRING", "PONTO", "CR",
                                "PV", "NAME"])
+        self.assertEqual(r[2].value, [[],[]])
         
     def test_13(self):
         program = '''
