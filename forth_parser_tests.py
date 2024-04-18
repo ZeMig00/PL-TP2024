@@ -18,6 +18,16 @@ class Test_Parser(unittest.TestCase):
         self.assertEqual(a['type'], 'palavra')
         self.assertEqual(a['name'], 'palavra')
         self.assertEqual(a["codigo"], ['.', "ola Mundo!"])
+    
+    def test3(self):
+        a = self.parser.parse(
+            '''
+            : hello-world ( -- )
+                ." Hello, World!" cr ;
+                hello-world 9 3 + 
+            '''
+        )
+        print(a)
      
 if __name__ == "__main__":
     unittest.main()

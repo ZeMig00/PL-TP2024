@@ -33,18 +33,35 @@ class Parser:
     def parse(self, data):
         return self.parser.parse(converter_lowercase_preservandostrings(data), lexer=self.lexer)
 
+    def p_instrucoes(self, p):
+        '''
+        instrucoes : execucao instrucoes
+                   | execucao
+        '''
+        p[0] = p[1]
+        if len(p) == 3:
+            p[0] = flatten([p[1], [p[2]]])
+
+    def p_execucao(self, p):
+        '''
+        execucao : funcao
+                 | codigo 
+                 | palavra
+        '''
+        p[0] = p[1]
+
+    def p_palavra(self, p):
+        '''
+        palavra : DP NAME codigo PV
+        '''
+        p[0] = {"type": "palavra", "name": p[2], "codigo": p[3]}
+    
     def p_funcao(self, p):
         """
         funcao : DP NAME PARAM codigo PV
-               | DP NAME codigo PV
         """
-        if len(p) == 6:
-            p[0] = {"type": "funcao", "name": p[2], "param": p[3], "codigo": p[4]}
-        elif len(p) == 5:
-            p[0] = {"type": "palavra", "name": p[2], "codigo": p[3]}
-        else:
-            raise Exception("Numero de parametros na p_funcao nao reconhecida")
-
+        p[0] = {"type": "funcao", "name": p[2], "param": p[3], "codigo": p[4]}
+        
     def p_codigo(self, p):
         """
         codigo : valor codigo
@@ -53,7 +70,6 @@ class Parser:
         p[0] = p[1]
         if len(p) == 3:
             p[0] = flatten([[p[0]], [p[2]]])
-        
 
     def p_valor(self, p):
         """
@@ -61,6 +77,23 @@ class Parser:
               | NUMBER
               | PONTO
               | STRING
+              | EMIT
+              | KEY
+              | SPACE
+              | SPACES
+              | CHAR
+              | CR
+              | DUP
+              | 2DUP
+              | MAIOR
+              | MENOR
+              | MAIORIG
+              | MENORIG
+              | DIVIDIR
+              | MULTIPLICAR
+              | SOMAR
+              | SUBTRAIR
+              | MOD
         """
         p[0] = p[1]
 
