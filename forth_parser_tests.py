@@ -27,7 +27,17 @@ class Test_Parser(unittest.TestCase):
                 hello-world 9 3 + 
             '''
         )
-        print(a)
+        self.assertEqual(a[0]['type'], 'funcao')
+        self.assertEqual(a[0]['param'][0], []) # entrada
+        self.assertEqual(a[0]['param'][1], []) # saida
+        self.assertEqual(a[0]['codigo'][0], '.')
+        self.assertEqual(a[0]['codigo'][1], ' Hello, World!')
+        self.assertEqual(a[0]['codigo'][2], 'cr')
+
+        self.assertEqual(a[1], 'hello-world')
+        self.assertEqual(a[2], 9.0)
+        self.assertEqual(a[3], 3.0)
+        self.assertEqual(a[4], '+')
      
 if __name__ == "__main__":
     unittest.main()
