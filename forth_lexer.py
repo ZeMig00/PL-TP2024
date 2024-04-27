@@ -8,7 +8,6 @@ tokens = (
     "PV",           #;
     "STRING",       #"
     "PARAM",        #(vars--vars)
-    "COMENTARIO",   #(...)
     "MAIOR",        #>
     "MENOR",        #<
     "MAIORIG",      #>=
@@ -38,7 +37,6 @@ def Lexer():
     # Regular expression rules for simple tokens
     t_DP    =           r':'
     t_PV    =           r';'
-    t_COMENTARIO =      r'\(.+\)'
     t_MAIOR =           r'>'
     t_MENOR =           r'<'
     t_MAIORIG =         r'>='
@@ -85,6 +83,9 @@ def Lexer():
         t.value = [entradas , saidas]
         return t
     
+    def t_COMENTARIO(t):
+        r'\(.+\)'
+
     def t_COMENTARIO2(t):
         r'\\.+'
 

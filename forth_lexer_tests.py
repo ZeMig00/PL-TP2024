@@ -7,6 +7,7 @@ class Test_Lexer(unittest.TestCase):
         self.lexer = Lexer()
 
     def verify_tokens(self, list_tokens, list_expected_tokens):
+        self.assertEqual(len(list_tokens), len(list_expected_tokens))
         for i,t in enumerate(list_tokens):
             self.assertEqual(t.type, list_expected_tokens[i])
     
@@ -39,22 +40,22 @@ class Test_Lexer(unittest.TestCase):
     def test_5(self):
         lex_input(self.lexer, '30 5 - . ( 25=30-5 )')
         r = list(self.lexer)
-        self.verify_tokens(r, ['NUMBER', 'NUMBER', 'SUBTRAIR', 'PONTO', 'COMENTARIO'])
+        self.verify_tokens(r, ['NUMBER', 'NUMBER', 'SUBTRAIR', 'PONTO'])
 
     def test_6(self):
         lex_input(self.lexer, '30 5 / . ( 6=30/5 )')
         r = list(self.lexer)
-        self.verify_tokens(r, ['NUMBER', 'NUMBER', 'DIVIDIR', 'PONTO', 'COMENTARIO'])
+        self.verify_tokens(r, ['NUMBER', 'NUMBER', 'DIVIDIR', 'PONTO'])
     
     def test_7(self):
         lex_input(self.lexer, '30 5 * . ( 6=30/5 )')
         r = list(self.lexer)
-        self.verify_tokens(r, ['NUMBER', 'NUMBER', 'MULTIPLICAR', 'PONTO', 'COMENTARIO'])
+        self.verify_tokens(r, ['NUMBER', 'NUMBER', 'MULTIPLICAR', 'PONTO'])
     
     def test_8(self):
         lex_input(self.lexer, '30 5 + 7 / .(5=(30+5)/7)')
         r = list(self.lexer)
-        self.verify_tokens(r, ['NUMBER', 'NUMBER', 'SOMAR', 'NUMBER', 'DIVIDIR', 'PONTO', 'COMENTARIO'])
+        self.verify_tokens(r, ['NUMBER', 'NUMBER', 'SOMAR', 'NUMBER', 'DIVIDIR', 'PONTO'])
 
     def test_9(self):
         lex_input(self.lexer, ': AVERAGE ( a b -- avg ) + 2/ ;')
@@ -115,7 +116,7 @@ class Test_Lexer(unittest.TestCase):
         '''
         lex_input(self.lexer, program)
         r = list(self.lexer)
-        self.assertEqual(len(r), 100)
+        self.assertEqual(len(r), 99)
 
     def test_14(self):
         program = '''
