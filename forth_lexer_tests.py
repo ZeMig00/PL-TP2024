@@ -134,5 +134,17 @@ class Test_Lexer(unittest.TestCase):
                                "PV", "NAME"])
         self.assertEqual(r[2].value, [[],[]])
 
+    def test_15(self):
+        program = '''
+            : maior2 2dup > if swap . ." é o maior " else . ." é o maior " then ;
+            77 156 maior2
+        '''
+        lex_input(self.lexer, program)
+        r = list(self.lexer)
+        self.verify_tokens(r, ["DP", "NAME", "NUMBER",
+                               "DUP", "MAIOR", "IF", "NAME",
+                               "PONTO", "PONTO", "STRING", "ELSE", "PONTO", "PONTO", "STRING", "THEN",
+                               "PV", "NUMBER", "NUMBER", "NAME"])
+
 if __name__ == "__main__":
     unittest.main()
