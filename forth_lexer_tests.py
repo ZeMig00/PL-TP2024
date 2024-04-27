@@ -116,6 +116,22 @@ class Test_Lexer(unittest.TestCase):
         lex_input(self.lexer, program)
         r = list(self.lexer)
         self.assertEqual(len(r), 100)
-        
+
+    def test_14(self):
+        program = '''
+        : TESTKEY ( -- ) \\asdsad
+            ." Hit a key: " KEY CR  \\ test
+            ." That = " . CR
+            ;
+            TESTKEY
+        '''
+        lex_input(self.lexer, program)
+        r = list(self.lexer)
+        self.verify_tokens(r, ["DP", "NAME", "PARAM",
+                               "PONTO", "STRING", "KEY", "CR",
+                               "PONTO", "STRING", "PONTO", "CR",
+                               "PV", "NAME"])
+        self.assertEqual(r[2].value, [[],[]])
+
 if __name__ == "__main__":
     unittest.main()

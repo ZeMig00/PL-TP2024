@@ -38,6 +38,15 @@ class Test_Parser(unittest.TestCase):
         self.assertEqual(a[2], 9.0)
         self.assertEqual(a[3], 3.0)
         self.assertEqual(a[4], '+')
+
+    def test4(self):
+        a = self.parser.parse(
+            '''
+            : hello-world ( -- )
+            ." Hello, World!" cr ;
+            hello-world \ Call the defined word
+            '''
+        )
      
 if __name__ == "__main__":
     unittest.main()

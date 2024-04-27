@@ -84,6 +84,9 @@ def Lexer():
         saidas = re.findall("[a-z][a-z0-9.-]*", m[0][1])
         t.value = [entradas , saidas]
         return t
+    
+    def t_COMENTARIO2(t):
+        r'\\.+'
 
     def t_NAME(t):
         r'[a-z][a-z0-9.-]*'
