@@ -66,10 +66,20 @@ class Parser:
         """
         codigo : valor codigo
                | valor
+               | condicao
         """
         p[0] = p[1]
         if len(p) == 3:
             p[0] = flatten([[p[0]], [p[2]]])
+
+    def p_condicao(self, p):
+        """
+        condicao : IF codigo THEN
+                 | IF codigo ELSE codigo THEN
+        """
+        p[0] = {"type": "condicao", "codigo_true" : p[2], "codigo_false": []}
+        if len(p) == 6:
+            p[0]["codigo_false"] = p[4]
 
     def p_valor(self, p):
         """
