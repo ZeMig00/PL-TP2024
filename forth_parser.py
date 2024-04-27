@@ -68,7 +68,7 @@ class Parser:
                | valor
                | condicao
         """
-        p[0] = p[1]
+        p[0] = [p[1]]
         if len(p) == 3:
             p[0] = flatten([[p[0]], [p[2]]])
 

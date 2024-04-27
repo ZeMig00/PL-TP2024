@@ -56,6 +56,28 @@ class Test_Parser(unittest.TestCase):
         self.assertEqual(a[2], 156.0)
         self.assertEqual(a[3],"maior2")
 
+    def test5(self):
+        a = self.parser.parse(
+            '''
+            : maior2 2dup > if swap then ;
+            : maior3 maior2 maior2 . ;
+            2 11 3 maior3
+            '''
+        )
+        self.assertEqual(a[0]['type'], 'palavra')
+        self.assertEqual(a[0]['codigo'], [2.0, "dup", ">", {
+            "type": "condicao", 
+            "codigo_true": ["swap"],
+            "codigo_false": []
+        }])
+
+        self.assertEqual(a[1]['type'], 'palavra')
+        self.assertEqual(a[1]['codigo'], ['maior2', 'maior2', '.'])
+
+        self.assertEqual(a[2], 2.0)
+        self.assertEqual(a[3], 11.0)
+        self.assertEqual(a[4], 3.0)
+        self.assertEqual(a[5], 'maior3')
      
 if __name__ == "__main__":
     unittest.main()
