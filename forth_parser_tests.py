@@ -79,5 +79,47 @@ class Test_Parser(unittest.TestCase):
         self.assertEqual(a[4], 3.0)
         self.assertEqual(a[5], 'maior3')
      
+    def test6(self):
+        a = self.parser.parse(
+            '''
+            : maior2 2dup > if drop else swap drop then ;
+            : maior3 maior2 maior2 ;
+            : maiorN depth 1 do maior2 loop ;
+            2 11 3 4 45 8 19 maiorN .
+            '''
+        )
+
+        self.assertEqual(a[0]['type'], 'palavra')
+        self.assertEqual(a[1]['type'], 'palavra')
+        self.assertEqual(a[2]['type'], 'palavra')
+        self.assertEqual(a[3], 2.0)
+        self.assertEqual(a[4], 11.0)
+        self.assertEqual(a[5], 3.0)
+        self.assertEqual(a[6], 4.0)
+        self.assertEqual(a[7], 45.0)
+        self.assertEqual(a[8], 8.0)
+        self.assertEqual(a[9], 19.0)
+        self.assertEqual(a[10], 'maiorn')
+        self.assertEqual(a[11], '.')
+
+    def test7(self):
+        a = self.parser.parse(
+            '''
+            : factorial ( n -- n! )
+            dup 0 = if
+            drop 1
+            else
+            dup 1 - recurse *
+            then ;
+            \ Example usage:
+            5 factorial . \ Calculate factorial of 5 and print result
+            '''
+        )
+
+        self.assertEqual(a[0]['type'], 'funcao')
+        self.assertEqual(a[1], 5.0)
+        self.assertEqual(a[2], 'factorial')
+        self.assertEqual(a[3], '.')
+        
 if __name__ == "__main__":
     unittest.main()

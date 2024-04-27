@@ -97,8 +97,7 @@ class Parser:
               | 2DUP
               | MAIOR
               | MENOR
-              | MAIORIG
-              | MENORIG
+              | IGUAL
               | DIVIDIR
               | MULTIPLICAR
               | SOMAR

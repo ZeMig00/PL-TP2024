@@ -10,8 +10,7 @@ tokens = (
     "PARAM",        #(vars--vars)
     "MAIOR",        #>
     "MENOR",        #<
-    "MAIORIG",      #>=
-    "MENORIG",      #<=
+    "IGUAL",        #=
     "DIVIDIR",      #/
     "MULTIPLICAR",  #*
     "SOMAR",        #+
@@ -39,8 +38,7 @@ def Lexer():
     t_PV    =           r';'
     t_MAIOR =           r'>'
     t_MENOR =           r'<'
-    t_MAIORIG =         r'>='
-    t_MENORIG =         r'<='
+    t_IGUAL =           r'='
     t_DIVIDIR =         r'\/'
     t_MULTIPLICAR =     r'\*'
     t_SOMAR =           r'\+'
