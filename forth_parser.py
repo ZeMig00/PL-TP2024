@@ -95,9 +95,7 @@ class Parser:
               | CR
               | DUP
               | 2DUP
-              | MAIOR
-              | MENOR
-              | IGUAL
+              | comparacao
               | DIVIDIR
               | MULTIPLICAR
               | SOMAR
@@ -105,6 +103,18 @@ class Parser:
               | MOD
         """
         p[0] = p[1]
+    
+    def p_comparacao(self, p):
+        """
+        comparacao : MAIOR IGUAL
+                   | MENOR IGUAL
+                   | IGUAL
+                   | MAIOR
+                   | MENOR
+        """
+        p[0] = p[1]
+        if len(p) == 3:
+            p[0] += p[2]
 
     #def p_vars(self, p):
     #    """
