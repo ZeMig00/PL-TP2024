@@ -118,5 +118,33 @@ class Test_VmGenerator(unittest.TestCase):
             '''
         )
 
+    def test10(self):
+        self.generator_test(
+            '''
+            5 10 <= 2 + 1 - .
+            ''',
+            '''
+            pushi 5
+            pushi 10
+            infeq
+            pushi 2
+            add
+            pushi 1
+            sub
+            writei
+            '''
+        )
+    
+    def test11(self):
+        self.generator_test(
+            '''
+            5.0 .
+            ''',
+            '''
+            pushf 5.0
+            writef
+            '''
+        )
+
 if __name__ == "__main__":
     unittest.main()
