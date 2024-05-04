@@ -134,7 +134,7 @@ class Test_VmGenerator(unittest.TestCase):
             writei
             '''
         )
-    
+
     def test11(self):
         self.generator_test(
             '''
@@ -143,6 +143,30 @@ class Test_VmGenerator(unittest.TestCase):
             '''
             pushf 5.0
             writef
+            '''
+        )
+        
+    def test12(self):
+        self.generator_test(
+            '''
+            : AVERAGE ( a b -- avg ) + 2/ ;
+            10 20 AVERAGE .
+            ''',
+            '''
+            start
+            pushi 10
+            pushi 20
+            pusha average
+            call
+            writei
+            stop
+            average:
+                pushfp
+                load -1
+                add
+                pushi 2
+                div
+                return
             '''
         )
 

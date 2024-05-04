@@ -5,45 +5,77 @@ class VmGenerator:
     
     parser = Parser()
     
-    def generate(self, parser_result_dict):
+    funcoes = ['emit', 
+               'key', 
+               'space', 
+               'spaces', 
+               'char', 
+               'cr',
+               'dup',
+               '2dup']
+
+    def funcao(self, f):
+        if f['name'] in self.funcoes:
+            raise Exception(f"{f['name']} already exists in {self.funcoes}")
+        assembly = f"{f['name']}:\n"
+        assembly += "\tpushfp\n"
+        assembly += "\tload -1\n"
+        assembly += self.generate(f['codigo'], line_begin='\t')
+        assembly += "\treturn\n"
+        self.funcoes.append(f['name'])
+        return assembly
+
+    def generate(self, parser_result_dict, line_begin = ''):
         assembly = ""
+        assembly_funcoes = ""
         last_element_type = None
+
+        if line_begin == '':
+            assembly = "start\n"
         for element in parser_result_dict:
-            if type(element) == float:
-                assembly += f"pushf {element}\n"
+            if element in self.funcoes:
+                assembly += f"{line_begin}pusha {element}\n"
+                assembly += f"{line_begin}call\n"
+            elif type(element) == dict and element['type'] == 'funcao':
+                assembly_funcoes += self.funcao(element)
+            elif type(element) == float:
+                assembly += f"{line_begin}pushf {element}\n"
                 last_element_type = float
             elif type(element) == int:
-                assembly += f"pushi {element}\n"
+                assembly += f"{line_begin}pushi {element}\n"
                 last_element_type = int
             elif element == '+':
-                assembly += f"add\n"
+                assembly += f"{line_begin}add\n"
             elif element == '-':
-                assembly += f"sub\n"
+                assembly += f"{line_begin}sub\n"
             elif element == '/':
-                assembly += f"div\n"
+                assembly += f"{line_begin}div\n"
             elif element == '*':
-                assembly += f"mul\n"
+                assembly += f"{line_begin}mul\n"
             elif element == '>':
-                assembly += f"sup\n"
+                assembly += f"{line_begin}sup\n"
             elif element == '>=':
-                assembly += f"supeq\n"
+                assembly += f"{line_begin}supeq\n"
             elif element == '<':
-                assembly += f"inf\n"
+                assembly += f"{line_begin}inf\n"
             elif element == '<=':
-                assembly += f"infeq\n"
+                assembly += f"{line_begin}infeq\n"
             elif element == '.' and last_element_type != None:
                 if last_element_type == int:
-                    assembly += 'writei\n'
+                    assembly += f'{line_begin}writei\n'
                 elif last_element_type == float:
-                    assembly += 'writef\n'
+                    assembly += f'{line_begin}writef\n'
                 elif last_element_type == str:
-                    assembly += 'writes\n'
+                    assembly += f'{line_begin}writes\n'
                 else:
                     raise Exception(f"No last element type supported")
             else:
                 raise Exception(f"Token {element} not supported")
         
-        return assembly
+        if line_begin == '':
+            assembly += "stop\n"
+
+        return assembly + assembly_funcoes
 
     def convert(self, code):
         result = self.parser.parse(code)
