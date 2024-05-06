@@ -51,7 +51,6 @@ def Lexer():
     t_KEY =             r'key'
     t_SPACE =           r'space'
     t_SPACES =          r'spaces'
-    t_CHAR =            r'char'
     t_CR =              r'cr'
     t_PONTO =           r'\.'
     t_DUP =             r'dup'
@@ -65,7 +64,6 @@ def Lexer():
         'key':      'KEY',
         'space':    'SPACE',
         'spaces':   'SPACES',
-        'char':     'CHAR',
         'cr':       'CR',
         'dup':      'DUP',
         '2dup':     '2DUP'
@@ -87,6 +85,12 @@ def Lexer():
     def t_COMENTARIO2(t):
         r'\\.+'
 
+    def t_CHAR(t):
+        r'char\s.'
+        m = re.findall(r"char\s(.)", str(t.value))
+        t.value = m[0]
+        return t
+    
     def t_NAME(t):
         r'[a-z][a-z0-9.-]*'
         if t.value in reserved:

@@ -1,15 +1,29 @@
-import unittest
+import unittest, logging, sys
 from forth_to_vm_generate import VmGenerator
 
 class Test_VmGenerator(unittest.TestCase):
 
     def setUp(self):
+        self.logger = logging.getLogger()
+        self.logger.level = logging.DEBUG
+        self.stream_handler = logging.StreamHandler(sys.stdout)
+        self.logger.addHandler(self.stream_handler)
+        self.stream_handler.stream = sys.stdout
         self.vm_generator = VmGenerator()
     
     def assertEqualString(self, f, s):
         f = f.split("\n")
         s = list(filter(None, s.split("\n")))
         for idx in range(len(f)):
+            if f[idx].strip() != s[idx].strip():
+                print("")
+                print("Return Value:-------")
+                print("\n".join(f))
+                print("-------------------")
+                print("Expected Value:-----")
+                print("\n".join(s))
+                print("-------------------")
+                print("TESTE STE\nTEADSA\nasdsad")
             self.assertEqual(f[idx].strip(), s[idx].strip())
 
     def generator_test(self, i, expected):
@@ -191,6 +205,38 @@ class Test_VmGenerator(unittest.TestCase):
                 pushi 2
                 div
                 return
+            '''
+        )
+
+    def test13(self):
+        self.generator_test(
+            '''
+            CHAR W .
+            ''',
+            '''
+            start
+            pushs "w"
+            chrcode
+            writei
+            stop
+            '''
+        )
+    
+    def test14(self):
+        self.generator_test(
+            '''
+            CHAR % DUP . EMIT
+            ''',
+            '''
+            start
+            pushs "%"
+            chrcode
+            pusha dup
+            call
+            writei
+            pusha emit
+            call
+            stop
             '''
         )
 

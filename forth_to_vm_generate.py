@@ -21,6 +21,10 @@ class VmGenerator:
         for i,v in enumerate(f['param'][0]):
             assembly += "\tpushfp\n"
             assembly += f"\tload {(i+1)*-1}\n"
+
+        if len(f['param'][0]) == 0:
+            assembly += "\tpushfp\n"
+            
         assembly += self.generate(f['codigo'], line_begin='\t')
         assembly += "\treturn\n"
         self.funcoes.append(f['name'])
@@ -39,6 +43,10 @@ class VmGenerator:
                 assembly += f"{line_begin}call\n"
             elif type(element) == dict and element['type'] == 'funcao':
                 assembly_funcoes += self.funcao(element)
+            elif type(element) == dict and element['type'] == 'char':
+                assembly += f"{line_begin}pushs \"{element['param']}\"\n"
+                assembly += f"chrcode\n"
+                last_element_type = int
             elif type(element) == float:
                 assembly += f"{line_begin}pushf {element}\n"
                 last_element_type = float

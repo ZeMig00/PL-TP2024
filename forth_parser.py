@@ -91,7 +91,7 @@ class Parser:
               | KEY
               | SPACE
               | SPACES
-              | CHAR
+              | char
               | CR
               | DUP
               | 2DUP
@@ -103,6 +103,12 @@ class Parser:
               | MOD
         """
         p[0] = p[1]
+
+    def p_char(self, p):
+        """
+        char : CHAR
+        """
+        p[0] = {"type": "char", "param": p[1]}
     
     def p_comparacao(self, p):
         """

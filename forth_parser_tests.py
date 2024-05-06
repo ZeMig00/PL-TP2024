@@ -120,6 +120,17 @@ class Test_Parser(unittest.TestCase):
         self.assertEqual(a[1], 5.0)
         self.assertEqual(a[2], 'factorial')
         self.assertEqual(a[3], '.')
+
+    def test8(self):
+        a = self.parser.parse(
+            '''
+            CHAR w .
+            '''
+        )
+        self.assertEqual(a[0]['type'], 'char')
+        self.assertEqual(a[0]['param'], 'w')
+        self.assertEqual(a[1], '.')
+
         
 if __name__ == "__main__":
     unittest.main()

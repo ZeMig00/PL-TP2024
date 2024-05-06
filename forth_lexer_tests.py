@@ -66,7 +66,7 @@ class Test_Lexer(unittest.TestCase):
     def test_10(self):
         lex_input(self.lexer, 'CHAR W . CHAR % DUP . EMIT CHAR A DUP . 32 + EMIT')
         r = list(self.lexer)
-        self.verify_tokens(r, ['CHAR', 'NAME', 'PONTO', 'CHAR', 'MOD', 'DUP', 'PONTO', 'EMIT', 'CHAR', 'NAME', 'DUP', 'PONTO', 'NUMBER', 'SOMAR', 'EMIT'])
+        self.verify_tokens(r, ['CHAR', 'PONTO', 'CHAR', 'DUP', 'PONTO', 'EMIT', 'CHAR', 'DUP', 'PONTO', 'NUMBER', 'SOMAR', 'EMIT'])
 
     def test_11(self):
         program = '''
@@ -145,6 +145,14 @@ class Test_Lexer(unittest.TestCase):
                                "DUP", "MAIOR", "IF", "NAME",
                                "PONTO", "PONTO", "STRING", "ELSE", "PONTO", "PONTO", "STRING", "THEN",
                                "PV", "NUMBER", "NUMBER", "NAME"])
+        
+    def test_16(self):
+        program = '''
+            CHAR w .
+        '''
+        lex_input(self.lexer, program)
+        r = list(self.lexer)
+        self.verify_tokens(r, ["CHAR", "PONTO"])
 
 if __name__ == "__main__":
     unittest.main()
