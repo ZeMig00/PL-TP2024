@@ -22,9 +22,11 @@ class Test_VmGenerator(unittest.TestCase):
             2.0 11.0 +
             ''',
             '''
+            start
             pushf 2.0
             pushf 11.0
             add
+            stop
             '''
         )
     
@@ -34,9 +36,11 @@ class Test_VmGenerator(unittest.TestCase):
             2 11 +
             ''',
             '''
+            start
             pushi 2
             pushi 11
             add
+            stop
             '''
         )
 
@@ -46,9 +50,11 @@ class Test_VmGenerator(unittest.TestCase):
             2 11 *
             ''',
             '''
+            start
             pushi 2
             pushi 11
             mul
+            stop
             '''
         )
     def test4(self):
@@ -57,9 +63,11 @@ class Test_VmGenerator(unittest.TestCase):
             2 11 /
             ''',
             '''
+            start
             pushi 2
             pushi 11
             div
+            stop
             '''
         )
     def test5(self):
@@ -68,9 +76,11 @@ class Test_VmGenerator(unittest.TestCase):
             2 11 -
             ''',
             '''
+            start
             pushi 2
             pushi 11
             sub
+            stop
             '''
         )
     def test6(self):
@@ -79,9 +89,11 @@ class Test_VmGenerator(unittest.TestCase):
             5 10 >
             ''',
             '''
+            start
             pushi 5
             pushi 10
             sup
+            stop
             '''
         )
     def test7(self):
@@ -90,9 +102,11 @@ class Test_VmGenerator(unittest.TestCase):
             5 10 <
             ''',
             '''
+            start
             pushi 5
             pushi 10
             inf
+            stop
             '''
         )
     def test8(self):
@@ -101,9 +115,11 @@ class Test_VmGenerator(unittest.TestCase):
             5 10 >=
             ''',
             '''
+            start
             pushi 5
             pushi 10
             supeq
+            stop
             '''
         )
     def test9(self):
@@ -112,9 +128,11 @@ class Test_VmGenerator(unittest.TestCase):
             5 10 <=
             ''',
             '''
+            start
             pushi 5
             pushi 10
             infeq
+            stop
             '''
         )
 
@@ -124,6 +142,7 @@ class Test_VmGenerator(unittest.TestCase):
             5 10 <= 2 + 1 - .
             ''',
             '''
+            start
             pushi 5
             pushi 10
             infeq
@@ -132,6 +151,7 @@ class Test_VmGenerator(unittest.TestCase):
             pushi 1
             sub
             writei
+            stop
             '''
         )
 
@@ -141,11 +161,13 @@ class Test_VmGenerator(unittest.TestCase):
             5.0 .
             ''',
             '''
+            start
             pushf 5.0
             writef
+            stop
             '''
         )
-        
+
     def test12(self):
         self.generator_test(
             '''
@@ -163,6 +185,8 @@ class Test_VmGenerator(unittest.TestCase):
             average:
                 pushfp
                 load -1
+                pushfp
+                load -2
                 add
                 pushi 2
                 div

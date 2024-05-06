@@ -18,8 +18,9 @@ class VmGenerator:
         if f['name'] in self.funcoes:
             raise Exception(f"{f['name']} already exists in {self.funcoes}")
         assembly = f"{f['name']}:\n"
-        assembly += "\tpushfp\n"
-        assembly += "\tload -1\n"
+        for i,v in enumerate(f['param'][0]):
+            assembly += "\tpushfp\n"
+            assembly += f"\tload {(i+1)*-1}\n"
         assembly += self.generate(f['codigo'], line_begin='\t')
         assembly += "\treturn\n"
         self.funcoes.append(f['name'])
