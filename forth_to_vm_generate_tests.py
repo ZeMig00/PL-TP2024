@@ -231,14 +231,55 @@ class Test_VmGenerator(unittest.TestCase):
             start
             pushs "%"
             chrcode
-            pusha dup
-            call
+            dup 1
             writei
             pusha emit
             call
             stop
+            emit:
+                    pushfp
+                    load -1
+                    writechr
+                    return
             '''
         )
+
+    def test15(self):
+        self.generator_test(
+            '''
+            CHAR W .
+            CHAR % DUP . EMIT
+            CHAR A DUP .
+            32 + EMIT
+            ''',
+            '''
+            start
+            pushs "w"
+            chrcode
+            writei
+            pushs "%"
+            chrcode
+            dup 1
+            writei
+            pusha emit
+            call
+            pushs "a"
+            chrcode
+            dup 1
+            writei
+            pushi 32
+            add
+            pusha emit
+            call
+            stop
+            emit:
+                    pushfp
+                    load -1
+                    writechr
+                    return
+            '''
+        )
+
 
 if __name__ == "__main__":
     unittest.main()
