@@ -47,7 +47,7 @@ class Test_Parser(unittest.TestCase):
             '''
         )
         self.assertEqual(a[0]['type'], 'palavra')
-        self.assertEqual(a[0]['codigo'], [2.0, "dup", ">=", {
+        self.assertEqual(a[0]['codigo'], ["2dup", ">=", {
             "type": "condicao", 
             "codigo_true": ["swap", ".", ".", " é o maior "],
             "codigo_false": [".", ".", " é o maior "]
@@ -65,7 +65,7 @@ class Test_Parser(unittest.TestCase):
             '''
         )
         self.assertEqual(a[0]['type'], 'palavra')
-        self.assertEqual(a[0]['codigo'], [2.0, "dup", ">", {
+        self.assertEqual(a[0]['codigo'], ["2dup", ">", {
             "type": "condicao", 
             "codigo_true": ["swap"],
             "codigo_false": []

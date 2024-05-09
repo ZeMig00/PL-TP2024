@@ -7,17 +7,17 @@ class VmGenerator:
     
     def __init__(self):
         self.funcoes = {
-            'emit': False, 
-            'key': False, 
-            'space': False, 
-            'spaces': False, 
+            'emit': False,      #feito
+            'spaces': False,    #feito
             'char': False, 
             'cr': False,
-            '2dup': False
+            '2dup': False       #feito
         }
 
         self.macros = {
-            'dup': 'dup 1'
+            'dup': ['dup 1'],
+            'key': ['read', 'chrcode'],
+            'space': ['writes " "'],
         }
 
     def gerar_emit(self):
@@ -36,19 +36,39 @@ class VmGenerator:
         assembly = ""
         if self.funcoes['2dup'] == True:
             assembly = f"2dup:\n"
-            assembly += "\tstorel 1\n"
-            assembly += "\tdup\n"
-            assembly += "\tpushl 1\n"
-            assembly += "\tdup\n"
-            assembly += "\tstorel 1\n"
-            assembly += "\tswap\n"
-            assembly += "\tpushl 1\n"
+            assembly += "\tpushfp\n"
+            assembly += "\tload -1\n"
+            assembly += "\tpushfp\n"
+            assembly += "\tload -2\n"
+
+            assembly += "\treturn\n"
+
+        return assembly
+    
+    def gerar_spaces(self):
+        assembly = ""
+        if self.funcoes['spaces'] == True:
+            assembly = f"spaces:\n"
+            assembly += "\tpushfp\n"
+            assembly += "\tload -1\n"
+
+            assembly += "spaces_loop:\n"
+            assembly += "\tjz spaces_fim\n"
+            assembly += "\twrites \" \"\n"
+            assembly += "\tpushi 1\n"
+            assembly += "\tsub\n"
+            assembly += "\tjump spaces_loop\n"
+
+            assembly += "spaces_fim:\n"
+            assembly += "\treturn\n"
+
         return assembly
 
     def gerar_funcoes_standard(self):
         assembly = ""
         assembly += self.gerar_emit()
         assembly += self.gerar_2dup()
+        assembly += self.gerar_spaces()
         return assembly
 
     def funcao(self, f):
@@ -62,8 +82,9 @@ class VmGenerator:
 
         if len(f['param'][0]) == 0:
             assembly += "\tpushfp\n"
-            
+        
         assembly += self.generate(f['codigo'], line_begin='\t')
+
         assembly += "\treturn\n"
         self.funcoes[f['name']] = True
         return assembly
@@ -77,7 +98,8 @@ class VmGenerator:
             assembly = "start\n"
         for element in parser_result_dict:
             if type(element) == str and element in self.macros:
-                assembly += f"{line_begin}{self.macros[element]}\n"
+                for macro_line in self.macros[element]:
+                    assembly += f"{line_begin}{macro_line}\n"
             elif type(element) == str and element in self.funcoes:
                 self.funcoes[element] = True
                 assembly += f"{line_begin}pusha {element}\n"

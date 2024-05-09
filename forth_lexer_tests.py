@@ -141,8 +141,8 @@ class Test_Lexer(unittest.TestCase):
         '''
         lex_input(self.lexer, program)
         r = list(self.lexer)
-        self.verify_tokens(r, ["DP", "NAME", "NUMBER",
-                               "DUP", "MAIOR", "IF", "NAME",
+        self.verify_tokens(r, ["DP", "NAME",
+                               "2DUP", "MAIOR", "IF", "NAME",
                                "PONTO", "PONTO", "STRING", "ELSE", "PONTO", "PONTO", "STRING", "THEN",
                                "PV", "NUMBER", "NUMBER", "NAME"])
         

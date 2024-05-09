@@ -280,6 +280,28 @@ class Test_VmGenerator(unittest.TestCase):
             '''
         )
 
+    def test16(self):
+        self.generator_test(
+            '''
+            2 3 2dup + .
+            ''',
+            '''
+            start
+            pushi 2
+            pushi 3
+            pusha 2dup
+            call
+            add
+            writei
+            stop
+            2dup:
+                    pushfp
+                    load -1
+                    pushfp
+                    load -2
+                    return
+            '''
+        )
 
 if __name__ == "__main__":
     unittest.main()

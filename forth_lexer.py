@@ -103,7 +103,7 @@ def Lexer():
         return t
     
     def t_NUMBER(t):
-        r'[-|\+]?[0-9]+(\.[0-9]+)?'
+        r'\b[-|\+]?[0-9]+(\.[0-9]+)?\b'
         if '.' in t.value:
             t.value = float(t.value)
         else:
